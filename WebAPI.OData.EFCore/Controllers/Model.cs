@@ -10,11 +10,12 @@
     public class Modem 
     {
         public string Name { get; set; } = string.Empty;
-   
     }
 
     public class DeviceDto 
     {
+        public string Type { get => "DeviceDto"; }
+
         public string Id { get; set; }
 
         public ModemDto? Modem { get; set; } = null;
@@ -22,6 +23,8 @@
 
     public class ModemDto
     {
+        public string Type { get => "ModemDto"; }
+
         public string Name { get; set; } = string.Empty;
 
     }
@@ -34,12 +37,12 @@
             CreateMap<Device, DeviceDto>()
                 .ForAllMembers(o => o.ExplicitExpansion());
 
-            CreateMap<Device, DeviceDto>()
-                .ReverseMap()
-                    .ForAllMembers(o => o.ExplicitExpansion());
+            CreateMap<DeviceDto, Device>();
 
             CreateMap<Modem, ModemDto>()
                 .ForAllMembers(o => o.ExplicitExpansion());
+
+            CreateMap<ModemDto, Modem>();
 
         }
     

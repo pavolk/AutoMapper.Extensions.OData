@@ -35,11 +35,12 @@ namespace WebAPI.OData.EFCore.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(ODataQueryOptions<DeviceDto> options)
         {
-            return Ok(await _devices.AsQueryable<Device>().GetQueryAsync(_mapper, options,
-                            new QuerySettings { 
-                                ODataSettings = new ODataSettings { HandleNullPropagation = HandleNullPropagationOption.False } }));
-
-            // return Ok(_devices);
+            return Ok(await _devices.AsQueryable().GetQueryAsync(_mapper, options,
+                            new QuerySettings {
+                                ODataSettings = new ODataSettings {
+                                    HandleNullPropagation = HandleNullPropagationOption.False
+                                }
+                            }));
         }
 
         // GET api/<DeviceController>/5
