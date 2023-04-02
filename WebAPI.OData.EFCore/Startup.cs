@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 using WebAPI.OData.EFCore.Binders;
 using WebAPI.OData.EFCore.Mappings;
 
@@ -24,14 +27,17 @@ namespace WebAPI.OData.EFCore
 
         public IConfiguration Configuration { get; }
 
+ 
         // This method gets called by the runtime. Use this method to add services to the container.
         //Rebuild
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MyDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<MyDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddControllers()
                 .AddOData(opt => opt.EnableQueryFeatures()
-                    .AddRouteComponents("", GetEdmModel(), services => services.AddSingleton<ISearchBinder, OpsTenantSearchBinder>()));
+                    .AddRouteComponents("", GetEdmModel(), 
+                                        services => services.AddSingleton<ISearchBinder, OpsTenantSearchBinder>()));
             services.AddSingleton<AutoMapper.IConfigurationProvider>
             (
                 new MapperConfiguration(cfg =>
